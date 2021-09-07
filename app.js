@@ -18,6 +18,8 @@ mongoose.connect('mongodb://localhost27017/bestfilmsdb', {
   useUnifiedTopology: true,
 });
 
+app.use('/', router);
+
 app.listen(PORT, () => {
   console.log(`Web-Server listen on ${PORT}`);
 });
