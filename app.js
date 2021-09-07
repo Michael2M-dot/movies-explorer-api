@@ -11,6 +11,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cookieParser());
+
 mongoose.connect('mongodb://localhost27017/bestfilmsdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
