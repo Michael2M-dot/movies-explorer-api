@@ -124,7 +124,7 @@ module.exports.updateUserData = (req, res, next) => {
     });
 };
 
-// автроризация пользователя
+// авторизация пользователя
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -132,7 +132,7 @@ module.exports.login = (req, res, next) => {
     next(new ValidationErr('Поле "email" и "password" не может быть пустым'));
   }
 
-  User.findUserByCredentials({ email, password })
+  User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
