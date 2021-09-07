@@ -6,6 +6,8 @@ const ServerErr = require('../errors/serverErr');
 const ResourceExistErr = require('../errors/resourceExistError');
 const NotFoundErr = require('../errors/notFoundError');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const {
   COMMON_SUCCESS_CODE,
   CREATE_RESOURCE_SUCCESS_CODE,
@@ -67,6 +69,7 @@ module.exports.createUser = (req, res, next) => {
         .send({
           _id: user._id,
           email: user.email,
+          name: user.name,
         });
     })
     .catch((err) => {
@@ -80,6 +83,83 @@ module.exports.createUser = (req, res, next) => {
         next(new ResourceExistErr('Такой пользователь уже существует!'));
       }
 
-      next();
+      next(ServerErr);
     });
+};
+
+// получаем всех пользователей
+module.exports.getUsers = (req, res, next) => {
+  User.find({})
+    .then((users) => res.status(COMMON_SUCCESS_CODE).send(users))
+    .catch(() => next(ServerErr));
+};
+
+// обновляем данные пользователя
+module.exports.updateUserData = (req, res, next) => {
+  const { name } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { name },
+    { new: true, runValidation: true })
+    .orFail()
+    .then((user) => {
+      res.status(COMMON_SUCCESS_CODE)
+        .send(user);
+    })
+    .catch((err) => {
+      if (err.name === VALIDATION_ERROR) {
+        next(new ValidationErr(
+          `Переданы некорректные данные для создания пользователя: ${ERROR_MESSAGE}`,
+        ));
+      }
+
+      if (err.name === RESOURCE_NOT_FOUND) {
+        next(new NotFoundErr('Пользователь с указанным id не найден.'));
+      }
+
+      if (err.kind === OBJECT_ID_ERROR) {
+        next(new ValidationErr('Передан неверный формат id пользователя.'));
+      }
+
+      next(ServerErr);
+    });
+};
+
+// автроризация пользователя
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    next(new ValidationErr('Поле "email" и "password" не может быть пустым'));
+  }
+
+  User.findUserByCredentials({ email, password })
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'secret_key',
+        { expiresIn: '7d' },
+      );
+
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        sameSite: 'None',
+        secure: true,
+        maxAge: 3600000 * 24 * 7,
+      })
+        .status(COMMON_SUCCESS_CODE)
+        .send({ message: 'Авторизация прошла успешно!' });
+    })
+    .catch((err) => next(err));
+};
+
+// выход из приложения
+module.exports.logout = (req, res) => {
+  res.cookie('jwt', '', {
+    maxAge: 0,
+    httpOnly: true,
+    sameSite: 'None',
+    secure: true,
+  })
+    .status(COMMON_SUCCESS_CODE)
+    .send({ message: 'Вы вышли из приложения!' });
 };
