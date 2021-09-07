@@ -29,8 +29,8 @@ const movieSchema = new mongoose.Schema({
       validator(image) {
         return validator.isUrl(image);
       },
-      message: 'Поле "image" должно быть валидным url-адресом.'
-    }
+      message: 'Поле "image" должно быть валидным url-адресом.',
+    },
   },
   trailer: {
     type: String,
@@ -39,8 +39,8 @@ const movieSchema = new mongoose.Schema({
       validator(trailer) {
         return validator.isUrl(trailer);
       },
-      message: 'Поле "trailer" должно быть валидным url-адресом.'
-    }
+      message: 'Поле "trailer" должно быть валидным url-адресом.',
+    },
   },
   thumbnail: {
     type: String,
@@ -49,8 +49,8 @@ const movieSchema = new mongoose.Schema({
       validator(thumbnail) {
         return validator.isUrl(thumbnail);
       },
-      message: 'Поле "thumbnail" должно быть валидным url-адресом.'
-    }
+      message: 'Поле "thumbnail" должно быть валидным url-адресом.',
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -68,7 +68,7 @@ const movieSchema = new mongoose.Schema({
   nameEN: {
     type: String,
     required: [true, 'Поле "nameEN" должно быть заполнено'],
-  }
+  },
 });
 
 module.exports = mongoose.model('movie', movieSchema);
