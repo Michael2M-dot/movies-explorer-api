@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middlewers/errorsHandler');
 const router = require('./routes/index');
+const authHandler = require('./middlewers/authHandler');
+const authRouter = require('./routes/auth');
 
 const { PORT = 3000 } = process.env;
 
@@ -27,7 +29,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', router);
+// авторизация пользователя
+app.use('/', authRouter);
+
+// роуты защищенные авторизацией
+app.use('/', authHandler, router);
 
 // централизованный обработчик ошибок
 app.use(errorHandler);

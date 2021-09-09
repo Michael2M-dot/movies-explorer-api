@@ -3,10 +3,10 @@ const AuthErr = require('../errors/authError')
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+// проверка авторизованного пользователя
 function authHandler (req, res, next) {
   const token = req.cookies.jwt;
 
-  console.log(req.cookies.jwt);
   if (!token) {
     return next (new AuthErr('Токен не пришел. Необходимо авторизоваться!'));
   }
