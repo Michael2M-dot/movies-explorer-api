@@ -63,7 +63,7 @@ module.exports.getMovies = (req, res, next) => {
 
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findByIdAndDelete(req.params._id)
+  Movie.findById(req.params._id)
     .orFail()
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {

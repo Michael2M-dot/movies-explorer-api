@@ -125,6 +125,10 @@ module.exports.updateUserData = (req, res, next) => {
         next(new ValidationErr('Передан неверный формат id пользователя.'));
       }
 
+      if (err.name === 'MongoError' && err.code === 11000) {
+        next(new ResourceExistErr('Такой пользователь уже существует!'));
+      }
+
       next(err);
     });
 };

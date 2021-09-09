@@ -61,8 +61,7 @@ module.exports.createMovieValidSchema = {
     image: Joi.string().required().uri().regex(REGEX_URL),
     trailer: Joi.string().required().uri().regex(REGEX_URL),
     thumbnail: Joi.string().required().uri().regex(REGEX_URL),
-    movieId: Joi.string().required().min(24).max(24)
-      .regex(REGEX_ID),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),
