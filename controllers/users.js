@@ -23,14 +23,14 @@ module.exports.getUser = (req, res, next) => {
     .then((user) => res.status(COMMON_SUCCESS_CODE).send(user))
     .catch((err) => {
       if (err.name === RESOURCE_NOT_FOUND) {
-        next(new NotFoundErr('Пользователь с указанным id не найден!'));
+        return next(new NotFoundErr('Пользователь с указанным id не найден!'));
       }
 
       if (err.kind === OBJECT_ID_ERROR) {
-        next(new ValidationErr('Передан неверный формат id пользователя!'));
+        return next(new ValidationErr('Передан неверный формат id пользователя!'));
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -71,16 +71,16 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        next(new ValidationErr(
+        return next(new ValidationErr(
           `Переданы некорректные данные для создания пользователя: ${ERROR_MESSAGE}`,
         ));
       }
 
       if (err.name === 'MongoError' && err.code === 11000) {
-        next(new ResourceExistErr('Такой пользователь уже существует!'));
+       return next(new ResourceExistErr('Пользователь с таким email уже существует!'));
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -112,24 +112,24 @@ module.exports.updateUserData = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        next(new ValidationErr(
+        return next(new ValidationErr(
           `Переданы некорректные данные для создания пользователя: ${ERROR_MESSAGE}`,
         ));
       }
 
       if (err.name === RESOURCE_NOT_FOUND) {
-        next(new NotFoundErr('Пользователь с указанным id не найден.'));
+        return next(new NotFoundErr('Пользователь с указанным id не найден.'));
       }
 
       if (err.kind === OBJECT_ID_ERROR) {
-        next(new ValidationErr('Передан неверный формат id пользователя.'));
+        return next(new ValidationErr('Передан неверный формат id пользователя.'));
       }
 
       if (err.name === 'MongoError' && err.code === 11000) {
-        next(new ResourceExistErr('Такой пользователь уже существует!'));
+        return next(new ResourceExistErr('Такой пользователь уже существует!'));
       }
 
-      next(err);
+      return next(err);
     });
 };
 

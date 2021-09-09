@@ -45,12 +45,12 @@ module.exports.createMovie = (req, res, next) => {
       .send(movie))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        next(new ValidationErr(
+        return next(new ValidationErr(
           `Ошибка при валидации данные для создании фильма: ${ERROR_MESSAGE(err)}`,
         ));
       }
 
-      next(err);
+      return next(err);
     });
 };
 
@@ -74,13 +74,13 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((result) => res.status(COMMON_SUCCESS_CODE).send(result))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        next(new ValidationErr('Передан неверный формат id карточки!'));
+        return next(new ValidationErr('Передан неверный формат id карточки!'));
       }
 
       if (err.kind === OBJECT_ID_ERROR) {
-        next(new ResourceExistErr('Карточки с указанным id не найдена!'));
+        return next(new ResourceExistErr('Карточки с указанным id не найдена!'));
       }
 
-      next(err);
+      return next(err);
     });
 };
