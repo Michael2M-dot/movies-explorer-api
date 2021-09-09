@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { celebrate } = require('celebrate');
+const authHandler = require('../middlewers/authHandler');
 const {
   getUser,
   getUsers,
@@ -7,7 +8,7 @@ const {
 } = require('../controllers/users');
 
 // получаем данные пользователя
-router.get('/users/me', getUser);
+router.get('/users/me', authHandler, getUser);
 
 // изменяем данные пользователя
 router.patch('/users/me', updateUserData);

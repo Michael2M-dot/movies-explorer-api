@@ -95,9 +95,9 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.updateUserData = (req, res, next) => {
   const { name, email } = req.body;
 
-  // if (req.user._id === undefined) {
-  //   throw new ValidationErr('Не передан id пользователя!');
-  // }
+  if (req.user._id === undefined) {
+    throw new ValidationErr('Не передан id пользователя!');
+  }
 
   if (!name) {
     throw new ValidationErr('Не преданы данные для обновления пользователя');
@@ -147,8 +147,8 @@ module.exports.login = (req, res, next) => {
 
       res.cookie('jwt', token, {
         httpOnly: true,
-        sameSite: 'None',
-        secure: true,
+        // sameSite: 'None',
+        // secure: true,
         maxAge: 3600000 * 24 * 7,
       })
         .status(COMMON_SUCCESS_CODE)
