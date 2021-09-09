@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ValidationErr = require('../errors/validationError');
-const ServerErr = require('../errors/serverErr');
 const ResourceExistErr = require('../errors/resourceExistError');
 const NotFoundErr = require('../errors/notFoundError');
 
@@ -31,7 +30,7 @@ module.exports.getUser = (req, res, next) => {
         next(new ValidationErr('Передан неверный формат id пользователя!'));
       }
 
-      next(ServerErr);
+      next(err);
     });
 };
 
@@ -81,7 +80,7 @@ module.exports.createUser = (req, res, next) => {
         next(new ResourceExistErr('Такой пользователь уже существует!'));
       }
 
-      next(ServerErr);
+      next(err);
     });
 };
 
@@ -89,7 +88,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(COMMON_SUCCESS_CODE).send(users))
-    .catch(() => next(ServerErr));
+    .catch((err) => next(err));
 };
 
 // обновляем данные пользователя
@@ -104,7 +103,6 @@ module.exports.updateUserData = (req, res, next) => {
     throw new ValidationErr('Не преданы данные для обновления пользователя');
   }
 
-  console.log('here2')
   User.findByIdAndUpdate(req.user._id, { name, email },
     { new: true, runValidation: true })
     .orFail()
@@ -127,7 +125,7 @@ module.exports.updateUserData = (req, res, next) => {
         next(new ValidationErr('Передан неверный формат id пользователя.'));
       }
 
-      next(ServerErr);
+      next(err);
     });
 };
 

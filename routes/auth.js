@@ -13,6 +13,6 @@ router.post('/signup', createUser);
 router.post('/signin', login);
 
 // выход из приложения
-router.post('/logout', logout);
+router.post('/signout', logout);
 
 module.exports = router;

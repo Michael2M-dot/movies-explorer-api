@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'Поле "description" должно быть заполнено'],
     validate: {
       validator(image) {
-        return validator.isUrl(image);
+        return validator.isURL(image);
       },
       message: 'Поле "image" должно быть валидным url-адресом.',
     },
@@ -37,7 +37,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'Поле "trailer" должно быть заполнено'],
     validate: {
       validator(trailer) {
-        return validator.isUrl(trailer);
+        return validator.isURL(trailer);
       },
       message: 'Поле "trailer" должно быть валидным url-адресом.',
     },
@@ -47,16 +47,16 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'Поле "thumbnail" должно быть заполнено'],
     validate: {
       validator(thumbnail) {
-        return validator.isUrl(thumbnail);
+        return validator.isURL(thumbnail);
       },
       message: 'Поле "thumbnail" должно быть валидным url-адресом.',
     },
   },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    required: [true, 'В поле "owner" должен быть передан id владельца карточки'],
-  },
+  // owner: {
+  //   // type: mongoose.Schema.Types.ObjectId,
+  //   // ref: 'user',
+  //   required: [true, 'В поле "owner" должен быть передан id владельца карточки'],
+  // },
   movieId: {
     type: String,
     required: [true, 'В поле "movieId" должен быть передан id фильма от сервиса MoviesExplorer'],

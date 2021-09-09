@@ -17,9 +17,14 @@ app.use(cookieParser());
 
 mongoose.connect('mongodb://localhost:27017/bestfilmsdb', {
   useNewUrlParser: true,
-  // useCreateIndex: true,
-  // useFindAndModify: false,
   useUnifiedTopology: true,
+});
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: '613752ce7569c3510038cbc5',
+  };
+  next();
 });
 
 app.use('/', router);
