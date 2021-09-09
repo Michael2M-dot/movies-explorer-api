@@ -52,11 +52,11 @@ const movieSchema = new mongoose.Schema({
       message: 'Поле "thumbnail" должно быть валидным url-адресом.',
     },
   },
-  // owner: {
-  //   // type: mongoose.Schema.Types.ObjectId,
-  //   // ref: 'user',
-  //   required: [true, 'В поле "owner" должен быть передан id владельца карточки'],
-  // },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: [true, 'В поле "owner" должен быть передан id владельца карточки'],
+  },
   movieId: {
     type: String,
     required: [true, 'В поле "movieId" должен быть передан id фильма от сервиса MoviesExplorer'],

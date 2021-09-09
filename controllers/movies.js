@@ -67,11 +67,12 @@ module.exports.deleteMovie = (req, res, next) => {
     .orFail()
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
-        throw new AccessDeniedErr('Вы можете удалять только свои фильмы!');
+        throw new AccessDeniedErr('Отказано в доступе. Вы можете удалять только свои фильмы!');
       }
+      return movie;
     })
     .then((movie) => Movie.deleteOne(movie, { new: true }))
-    .then((result) => res.status(COMMON_SUCCESS_CODE).send(result))
+    .then((result) => res.status(COMMON_SUCCESS_CODE).send({ result, message: 'Фильм успешно удален!'}))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
         return next(new ValidationErr('Передан неверный формат id карточки!'));

@@ -6,14 +6,17 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const errorHandler = require('./middlewers/errorsHandler');
-const corsRequestValidate = require('./middlewers/cors');
+// const corsRequestValidate = require('./middlewers/cors');
 const router = require('./routes/index');
-const authHandler = require('./middlewers/authHandler');
-const authRouter = require('./routes/auths');
+// const authHandler = require('./middlewers/authHandler');
+// const authRouter = require('./routes/auths');
 const { apiRequestLimiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middlewers/logger');
 
-const { PORT = 3000 } = process.env;
+const {
+  PORT = 3000,
+  MONGO_URL = 'mongodb://localhost:27017/bestfilmsdb',
+} = process.env;
 
 const app = express();
 
@@ -23,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // подключили базу данных
-mongoose.connect('mongodb://localhost:27017/bestfilmsdb', {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -44,11 +47,8 @@ app.use(helmet());
 // пишем логи запросов
 app.use(requestLogger);
 
-// авторизация пользователя
-app.use('/', corsRequestValidate, authRouter);
-
-// роуты защищенные авторизацией
-app.use('/', corsRequestValidate, authHandler, router);
+// общий роут
+app.use('/', router);
 
 // пишем логи ошибок
 app.use(errorLogger);
