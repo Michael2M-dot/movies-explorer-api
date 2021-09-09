@@ -4,6 +4,7 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+const { errors } = require('celebrate');
 const errorHandler = require('./middlewers/errorsHandler');
 const router = require('./routes/index');
 const authHandler = require('./middlewers/authHandler');
@@ -43,6 +44,9 @@ app.use('/', authRouter);
 
 // роуты защищенные авторизацией
 app.use('/', authHandler, router);
+
+// ошибки валидации модуля celebrate
+app.use(errors());
 
 // централизованный обработчик ошибок
 app.use(errorHandler);
