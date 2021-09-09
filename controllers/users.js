@@ -76,10 +76,6 @@ module.exports.createUser = (req, res, next) => {
         ));
       }
 
-      if (err.name === 'MongoError' && err.code === 11000) {
-       return next(new ResourceExistErr('Пользователь с таким email уже существует!'));
-      }
-
       return next(err);
     });
 };
@@ -126,7 +122,7 @@ module.exports.updateUserData = (req, res, next) => {
       }
 
       if (err.name === 'MongoError' && err.code === 11000) {
-        return next(new ResourceExistErr('Такой пользователь уже существует!'));
+        return next(new ResourceExistErr('Пользователь с таким email уже существует!'));
       }
 
       return next(err);
