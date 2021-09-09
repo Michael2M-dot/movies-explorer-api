@@ -1,7 +1,5 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const whiteList = [
-  'https://mmm.mesto.nomoredomains.monster',
-  'http://mmm.mesto.nomoredomains.monster',
   'http://localhost:3000',
 ];
 
