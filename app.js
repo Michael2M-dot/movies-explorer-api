@@ -6,10 +6,7 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const errorHandler = require('./middlewers/errorsHandler');
-// const corsRequestValidate = require('./middlewers/cors');
 const router = require('./routes/index');
-// const authHandler = require('./middlewers/authHandler');
-// const authRouter = require('./routes/auths');
 const { apiRequestLimiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middlewers/logger');
 
@@ -48,7 +45,7 @@ app.use(helmet());
 app.use(requestLogger);
 
 // общий роут
-app.use('/', router);
+app.use(router);
 
 // пишем логи ошибок
 app.use(errorLogger);
