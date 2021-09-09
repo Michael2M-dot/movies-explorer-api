@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
-const AuthErr = require('../errors/authError')
+const AuthErr = require('../errors/authError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 // проверка авторизованного пользователя
-function authHandler (req, res, next) {
+function authHandler(req, res, next) {
   const token = req.cookies.jwt;
 
   if (!token) {
-    return next (new AuthErr('Токен не пришел. Необходимо авторизоваться!'));
+    return next(new AuthErr('Токен не пришел. Необходимо авторизоваться!'));
   }
 
   let payload;
@@ -16,11 +16,11 @@ function authHandler (req, res, next) {
   try {
     payload = jwt.verify(
       token,
-      NODE_ENV === 'production' ? JWT_SECRET : 'secret-key'
+      NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
     );
-  } catch(err) {
-    next(new AuthErr('Токен не проошел верификацию. Необходимо авторизоваться!'))
-  };
+  } catch (err) {
+    next(new AuthErr('Токен не проошел верификацию. Необходимо авторизоваться!'));
+  }
 
   req.user = payload;
 

@@ -5,15 +5,15 @@ const apiRequestLimiter = rateLimiter({
   windowMs: 15 * 60 * 1000,
   max: 600,
   message: `С вашего IP-адреса поступило слишком много запросов!
-    Повторите Ваш запрос через 15 минут!`
-})
+    Повторите Ваш запрос через 15 минут!`,
+});
 
 // лимит на создание новых аккаунтов с одного IP - 15 в час
-const createNewAccountRequestLimiter = rateLimiter({
+const createNewAccountLimiter = rateLimiter({
   windowMs: 60 * 60 * 1000,
   max: 15,
   message: `С Вашего IP-адреса поступило слишком много запросов,
     на регистрацию нового пользователя! Попробуйте еще раз через 1 час. `,
-})
+});
 
-module.exports = { apiRequestLimiter, createNewAccountRequestLimiter };
+module.exports = { apiRequestLimiter, createNewAccountLimiter };
