@@ -10,6 +10,7 @@ const router = require('./routes/index');
 const authHandler = require('./middlewers/authHandler');
 const authRouter = require('./routes/auths');
 const { apiRequestLimiter } = require('./utils/limiter');
+const { requestLogger, errorLogger } = require('./middlewers/logger');
 
 const { PORT = 3000 } = process.env;
 
@@ -39,11 +40,17 @@ app.use(apiRequestLimiter);
 // защита подделки заголовков
 app.use(helmet());
 
+// пишем логи запросов
+app.use(requestLogger);
+
 // авторизация пользователя
 app.use('/', authRouter);
 
 // роуты защищенные авторизацией
 app.use('/', authHandler, router);
+
+// пишем логи ошибок
+app.use(errorLogger);
 
 // ошибки валидации модуля celebrate
 app.use(errors());

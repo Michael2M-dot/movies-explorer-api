@@ -1,7 +1,7 @@
 const Movie = require('../models/movie');
 const ValidationErr = require('../errors/validationError');
 const ResourceExistErr = require('../errors/resourceExistError');
-// const AccessDeniedErr = require('../errors/accessDeniedErr');
+const AccessDeniedErr = require('../errors/accessDeniedErr');
 
 const {
   COMMON_SUCCESS_CODE,
@@ -63,9 +63,13 @@ module.exports.getMovies = (req, res, next) => {
 
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
-  // console.log(req.params._id)
   Movie.findByIdAndDelete(req.params._id)
     .orFail()
+    .then((movie) => {
+      if (movie.owner.toString() !== req.user._id) {
+        throw new AccessDeniedErr('Вы можете удалять только свои фильмы!');
+      }
+    })
     .then((movie) => Movie.deleteOne(movie, { new: true }))
     .then((result) => res.status(COMMON_SUCCESS_CODE).send(result))
     .catch((err) => {
