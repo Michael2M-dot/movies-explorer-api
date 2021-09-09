@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const errorHandler = require('./middlewers/errorsHandler');
+const corsRequestValidate = require('./middlewers/cors');
 const router = require('./routes/index');
 const authHandler = require('./middlewers/authHandler');
 const authRouter = require('./routes/auths');
@@ -44,10 +45,10 @@ app.use(helmet());
 app.use(requestLogger);
 
 // авторизация пользователя
-app.use('/', authRouter);
+app.use('/', corsRequestValidate, authRouter);
 
 // роуты защищенные авторизацией
-app.use('/', authHandler, router);
+app.use('/', corsRequestValidate, authHandler, router);
 
 // пишем логи ошибок
 app.use(errorLogger);
