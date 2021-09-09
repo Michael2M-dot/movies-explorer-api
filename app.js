@@ -6,7 +6,8 @@ const cookieParser = require('cookie-parser');
 const errorHandler = require('./middlewers/errorsHandler');
 const router = require('./routes/index');
 const authHandler = require('./middlewers/authHandler');
-const authRouter = require('./routes/auth');
+const authRouter = require('./routes/auths');
+const { apiLimiter } = require('./utils/limiter');
 
 const { PORT = 3000 } = process.env;
 
@@ -28,6 +29,9 @@ app.use((req, res, next) => {
   };
   next();
 });
+
+// лимитируем количество запросов с одного IP
+app.use(apiLimiter)
 
 // авторизация пользователя
 app.use('/', authRouter);

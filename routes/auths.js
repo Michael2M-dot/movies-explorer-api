@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const { createNewAccountLimiter } = require('../utils/limiter');
 const {
   createUser,
   login,
@@ -7,7 +7,7 @@ const {
 } = require('../controllers/users');
 
 // регистрация пользователя
-router.post('/signup', createUser);
+router.post('/signup', createNewAccountLimiter, createUser);
 
 // авторизация пользователя
 router.post('/signin', login);
