@@ -11,8 +11,6 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const {
   COMMON_SUCCESS_CODE,
   CREATE_RESOURCE_SUCCESS_CODE,
-  VALIDATION_ERROR_CODE,
-  RESOURCE_NOT_FOUND_CODE,
   RESOURCE_NOT_FOUND,
   OBJECT_ID_ERROR,
   VALIDATION_ERROR,
@@ -96,13 +94,18 @@ module.exports.getUsers = (req, res, next) => {
 
 // обновляем данные пользователя
 module.exports.updateUserData = (req, res, next) => {
-  const { name } = req.body;
+  const { name, email } = req.body;
 
-  if (!req.user._id) {
-    throw new ValidationErr('Не передан id пользователя!')
+  // if (req.user._id === undefined) {
+  //   throw new ValidationErr('Не передан id пользователя!');
+  // }
+
+  if (!name) {
+    throw new ValidationErr('Не преданы данные для обновления пользователя');
   }
 
-  User.findByIdAndUpdate(req.user._id, { name },
+  console.log('here2')
+  User.findByIdAndUpdate(req.user._id, { name, email },
     { new: true, runValidation: true })
     .orFail()
     .then((user) => {

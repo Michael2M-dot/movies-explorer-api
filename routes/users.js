@@ -3,7 +3,7 @@ const { celebrate } = require('celebrate');
 const {
   getUser,
   getUsers,
-  updateUserData
+  updateUserData,
 } = require('../controllers/users');
 
 // получаем данные пользователя
