@@ -98,6 +98,10 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.updateUserData = (req, res, next) => {
   const { name } = req.body;
 
+  if (!req.user._id) {
+    throw new ValidationErr('Не передан id пользователя!')
+  }
+
   User.findByIdAndUpdate(req.user._id, { name },
     { new: true, runValidation: true })
     .orFail()
