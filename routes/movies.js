@@ -1,24 +1,21 @@
 const router = require('express').Router();
-const { celebrate } = require('celebrate');
 const {
   createMovie,
   getMovies,
   deleteMovie,
 } = require('../controllers/movies');
-
 const {
-  userAuthSchema,
-  createMovieValidSchema,
-  movieAccessSchema,
-} = require('../utils/celebrateSchema');
+  validateCreateMovieData,
+  validateMovieAccessId,
+} = require('../middlewares/validations');
 
 // добавляем фильм
-router.post('/movies', celebrate(createMovieValidSchema), createMovie);
+router.post('/movies', validateCreateMovieData, createMovie);
 
 // удаляем фильм
-router.delete('/movies/:_id', celebrate(movieAccessSchema), deleteMovie);
+router.delete('/movies/:_id', validateMovieAccessId, deleteMovie);
 
 // получаем все фильмы
-router.get('/movies', celebrate(userAuthSchema), getMovies);
+router.get('/movies', getMovies);
 
 module.exports = router;

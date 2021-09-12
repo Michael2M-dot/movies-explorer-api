@@ -1,22 +1,21 @@
 const router = require('express').Router();
-const { celebrate } = require('celebrate');
 const { createNewAccountLimiter } = require('../utils/limiter');
 const {
   createUser,
   login,
   logout,
 } = require('../controllers/users');
-
 const {
-  signUpSchema,
-  signInSchema,
-} = require('../utils/celebrateSchema');
+  validateSignUp,
+  validateSignIn,
+} = require('../middlewares/validations');
 
 // регистрация пользователя
-router.post('/signup', createNewAccountLimiter, celebrate(signUpSchema), createUser);
+// router.post('/signup', createNewAccountLimiter, celebrate(signUpSchema), createUser);
+router.post('/signup', createNewAccountLimiter, validateSignUp, createUser);
 
 // авторизация пользователя
-router.post('/signin', celebrate(signInSchema), login);
+router.post('/signin', validateSignIn, login);
 
 // выход из приложения
 router.post('/signout', logout);

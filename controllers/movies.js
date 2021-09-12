@@ -6,9 +6,9 @@ const AccessDeniedErr = require('../errors/accessDeniedErr');
 const {
   COMMON_SUCCESS_CODE,
   CREATE_RESOURCE_SUCCESS_CODE,
-  OBJECT_ID_ERROR,
   VALIDATION_ERROR,
   ERROR_MESSAGE,
+  RESOURCE_NOT_FOUND,
 } = require('../errors/errors');
 
 // добавляем фильм в базу
@@ -69,17 +69,18 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() !== req.user._id) {
         throw new AccessDeniedErr('Отказано в доступе. Вы можете удалять только свои фильмы!');
       }
-      return movie;
     })
     .then((movie) => Movie.deleteOne(movie, { new: true }))
-    .then((result) => res.status(COMMON_SUCCESS_CODE).send({ result, message: 'Фильм успешно удален!'}))
+    .then((result) => res.status(COMMON_SUCCESS_CODE).send({
+      result, message: 'Фильм успешно удален из Вашей медиатеки!',
+    }))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        return next(new ValidationErr('Передан неверный формат id карточки!'));
+        return next(new ValidationErr('Ошибка. Передан неверный формат id фильма!'));
       }
 
-      if (err.kind === OBJECT_ID_ERROR) {
-        return next(new ResourceExistErr('Карточки с указанным id не найдена!'));
+      if (err.name === RESOURCE_NOT_FOUND) {
+        return next(new ResourceExistErr('Ошибка. Фильм с указанным id не найден!'));
       }
 
       return next(err);

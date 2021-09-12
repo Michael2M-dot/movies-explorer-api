@@ -8,7 +8,7 @@ function authHandler(req, res, next) {
   const token = req.cookies.jwt;
 
   if (!token) {
-    return next(new AuthErr('Токен не пришел. Необходимо авторизоваться!'));
+    return next(new AuthErr('Ошибка. Токен не пришел. Необходимо авторизоваться!'));
   }
 
   let payload;
@@ -19,7 +19,7 @@ function authHandler(req, res, next) {
       NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
     );
   } catch (err) {
-    next(new AuthErr('Токен не проошел верификацию. Необходимо авторизоваться!'));
+    next(new AuthErr('Ошибка. Не верный токен. Необходимо авторизоваться!'));
   }
 
   req.user = payload;

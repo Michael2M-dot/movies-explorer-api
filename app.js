@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
-const errorHandler = require('./middlewers/errorsHandler');
+const errorHandler = require('./middlewares/errorsHandler');
 const router = require('./routes/index');
 const { apiRequestLimiter } = require('./utils/limiter');
-const { requestLogger, errorLogger } = require('./middlewers/logger');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
   PORT = 3000,
@@ -30,7 +30,7 @@ mongoose.connect(MONGO_URL, {
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '613752ce7569c3510038cbc5',
+    _id: '613dc940d576d4b7047f8a45',
   };
   next();
 });

@@ -2,13 +2,14 @@ const router = require('express').Router();
 const userRouter = require('./users');
 const movieRouter = require('./movies');
 const authRouter = require('./auths');
-const auth = require('../middlewers/authHandler');
-const corsRequestValidate = require('../middlewers/cors');
+const auth = require('../middlewares/authHandler');
+const corsRequestValidate = require('../middlewares/cors');
 const NotFoundErr = require('../errors/notFoundError');
+const { validateUserAuthToken } = require('../middlewares/validations');
 
 router.use(corsRequestValidate);
 router.use('/', authRouter);
-router.use(auth);
+router.use(validateUserAuthToken, auth);
 router.use('/', userRouter);
 router.use('/', movieRouter);
 router.use((req, res, next) => {

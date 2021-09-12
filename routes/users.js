@@ -1,22 +1,20 @@
 const router = require('express').Router();
-const { celebrate } = require('celebrate');
 const {
   getUser,
   getUsers,
   updateUserData,
 } = require('../controllers/users');
 const {
-  userAuthSchema,
-  updateUserDataValidSchema,
-} = require('../utils/celebrateSchema');
+  validateUserUpdateData,
+} = require('../middlewares/validations');
 
 // получаем данные пользователя
-router.get('/users/me', celebrate(userAuthSchema), getUser);
+router.get('/users/me', getUser);
 
 // изменяем данные пользователя
-router.patch('/users/me', celebrate(updateUserDataValidSchema), updateUserData);
+router.patch('/users/me', validateUserUpdateData, updateUserData);
 
 // получаем данные всех пользователей
-router.get('/users', celebrate(userAuthSchema), getUsers);
+router.get('/users', getUsers);
 
 module.exports = router;
