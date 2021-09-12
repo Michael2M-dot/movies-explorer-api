@@ -28,13 +28,6 @@ mongoose.connect(MONGO_URL, {
   useUnifiedTopology: true,
 });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '613dc940d576d4b7047f8a45',
-  };
-  next();
-});
-
 // лимитируем количество запросов с одного IP
 app.use(apiRequestLimiter);
 
