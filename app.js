@@ -28,14 +28,14 @@ mongoose.connect(MONGO_URL, {
   useUnifiedTopology: true,
 });
 
+// пишем логи запросов
+app.use(requestLogger);
+
 // лимитируем количество запросов с одного IP
 app.use(apiRequestLimiter);
 
 // защита подделки заголовков
 app.use(helmet());
-
-// пишем логи запросов
-app.use(requestLogger);
 
 // общий роут
 app.use(router);
