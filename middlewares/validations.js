@@ -74,7 +74,8 @@ module.exports.validateUserUpdateData = celebrate({
       .messages({
         'string.required': 'Ошибка. Поле "name" должно быть заполнено!',
       }),
-    email: Joi.string().required().email()
+    email: Joi.string().required()
+      .email()
       .message('Ошибка. Поле "email" должно быть валидным email-адресом!')
       .messages({
         'string.required': 'Ошибка. Поле "email" должно быть заполнено!',

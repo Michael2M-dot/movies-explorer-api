@@ -17,35 +17,23 @@ const {
 
 const app = express();
 
-// парсеры
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-
 // подключили базу данных
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// пишем логи запросов
 app.use(requestLogger);
-
-// лимитируем количество запросов с одного IP
 app.use(apiRequestLimiter);
-
+app.use(cookieParser());
 // защита подделки заголовков
 app.use(helmet());
-
-// общий роут
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
-
-// пишем логи ошибок
 app.use(errorLogger);
-
 // ошибки валидации модуля celebrate
 app.use(errors());
-
 // централизованный обработчик ошибок
 app.use(errorHandler);
 
