@@ -56,7 +56,7 @@ module.exports.validateUserAuthToken = celebrate({
   cookies: Joi.object().keys({
     jwt: Joi.string().required()
       .regex(REGEX_JWT)
-      .message('Ошибка. Передан не валидный токен')
+      .message('Ошибка. Передан невалидный токен')
       .messages({
         'string.required': 'Ошибка. Токен на пришел.',
       }),
