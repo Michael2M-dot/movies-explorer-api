@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const {
   JWT_SECRET = 'secret-key',
-  MONGO_URL = 'mongodb://localhost:27017/bestfilmsdb'
+  MONGO_URL = 'mongodb://localhost:27017/bestfilmsdb',
 } = process.env;
 
 module.exports = {

@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const { MONGO_URL } = require('./config');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const { MONGO_URL } = require('./config');
 const errorHandler = require('./middlewares/errorsHandler');
 const router = require('./routes/index');
 const { apiRequestLimiter } = require('./utils/limiter');

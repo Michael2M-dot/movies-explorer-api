@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config');
 const AuthErr = require('../errors/authError');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
 
 // проверка авторизованного пользователя
 function authHandler(req, res, next) {
@@ -16,7 +15,7 @@ function authHandler(req, res, next) {
   try {
     payload = jwt.verify(
       token,
-      NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
+      JWT_SECRET,
     );
   } catch (err) {
     next(new AuthErr('Ошибка. Не верный токен. Необходимо авторизоваться!'));

@@ -1,11 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config');
 const User = require('../models/user');
 const ValidationErr = require('../errors/validationError');
 const ResourceExistErr = require('../errors/resourceExistError');
 const NotFoundErr = require('../errors/notFoundError');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
   COMMON_SUCCESS_CODE,
@@ -154,7 +153,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
+        JWT_SECRET,
         { expiresIn: '7d' },
       );
 
