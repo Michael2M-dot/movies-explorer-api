@@ -58,7 +58,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'В поле "owner" должен быть передан id владельца карточки'],
   },
   movieId: {
-    type: String,
+    type: Number,
     required: [true, 'В поле "movieId" должен быть передан id фильма от сервиса MoviesExplorer'],
   },
   nameRU: {
