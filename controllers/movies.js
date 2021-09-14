@@ -1,6 +1,5 @@
 const Movie = require('../models/movie');
 const ValidationErr = require('../errors/validationError');
-const ResourceExistErr = require('../errors/resourceExistError');
 const AccessDeniedErr = require('../errors/accessDeniedErr');
 const NotFoundErrors = require('../errors/notFoundError');
 
@@ -64,6 +63,10 @@ module.exports.getMovies = (req, res, next) => {
 
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
+  if (!req.params._id) {
+    throw new ValidationErr('Ошибка. Не передан id фильма!');
+  }
+
   Movie.findById(req.params._id)
     .orFail()
     .then((movie) => {

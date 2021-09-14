@@ -18,7 +18,7 @@ const {
 
 // получаем данные пользователя
 module.exports.getUser = (req, res, next) => {
-  if(!req.user._id) {
+  if (!req.user._id) {
     throw new ValidationErr('Ошибка. Не передан id пользователя!');
   }
 
