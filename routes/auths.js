@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const auth = require('../middlewares/authHandler');
 const { createNewAccountLimiter } = require('../utils/limiter');
 const {
   createUser,
@@ -8,6 +9,7 @@ const {
 const {
   validateSignUp,
   validateSignIn,
+  validateUserAuthToken,
 } = require('../middlewares/validations');
 
 // регистрация пользователя
@@ -18,6 +20,6 @@ router.post('/signup', createNewAccountLimiter, validateSignUp, createUser);
 router.post('/signin', validateSignIn, login);
 
 // выход из приложения
-router.post('/signout', logout);
+router.post('/signout', validateUserAuthToken, auth, logout);
 
 module.exports = router;
