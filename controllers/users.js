@@ -18,6 +18,10 @@ const {
 
 // получаем данные пользователя
 module.exports.getUser = (req, res, next) => {
+  if(!req.user._id) {
+    throw new ValidationErr('Ошибка. Не передан id пользователя!');
+  }
+
   User.findById(req.user._id)
     .orFail()
     .then((user) => res.status(COMMON_SUCCESS_CODE).send(user))
@@ -95,7 +99,7 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.updateUserData = (req, res, next) => {
   const { name, email } = req.body;
 
-  if (req.user._id === undefined) {
+  if (!req.user._id) {
     throw new ValidationErr('Ошибка. Не передан id пользователя!');
   }
 
