@@ -2,6 +2,7 @@ const Movie = require('../models/movie');
 const ValidationErr = require('../errors/validationError');
 const ResourceExistErr = require('../errors/resourceExistError');
 const AccessDeniedErr = require('../errors/accessDeniedErr');
+const NotFoundErrors = require('../errors/notFoundError');
 
 const {
   COMMON_SUCCESS_CODE,
@@ -80,7 +81,7 @@ module.exports.deleteMovie = (req, res, next) => {
       }
 
       if (err.name === RESOURCE_NOT_FOUND) {
-        return next(new ResourceExistErr('Ошибка. Фильм с указанным id не найден!'));
+        return next(new NotFoundErrors('Ошибка. Фильм с указанным id не найден!'));
       }
 
       return next(err);
