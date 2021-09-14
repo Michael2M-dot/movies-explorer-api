@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const { MONGO_URL } = require('./config');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
@@ -10,10 +11,7 @@ const router = require('./routes/index');
 const { apiRequestLimiter } = require('./utils/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const {
-  PORT = 3000,
-  MONGO_URL = 'mongodb://localhost:27017/bestfilmsdb',
-} = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
