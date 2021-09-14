@@ -9,6 +9,7 @@ const {
   VALIDATION_ERROR,
   ERROR_MESSAGE,
   RESOURCE_NOT_FOUND,
+  respMovieDeleted,
 } = require('../errors/errors');
 
 // добавляем фильм в базу
@@ -76,7 +77,7 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .then((movie) => Movie.deleteOne(movie, { new: true }))
     .then((result) => res.status(COMMON_SUCCESS_CODE).send({
-      result, message: 'Фильм успешно удален из Вашей медиатеки!',
+      result, message: respMovieDeleted,
     }))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {

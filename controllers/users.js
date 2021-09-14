@@ -13,12 +13,23 @@ const {
   OBJECT_ID_ERROR,
   VALIDATION_ERROR,
   ERROR_MESSAGE,
+  MONGO_DB_ERROR,
+  respAuthorizationSuccess,
+  respLogOutSuccess,
+  errEmailOrPasswordEmpty,
+  errUserEmailAlreadyExist,
+  errUserIdEmpty,
+  errWrongUserId,
+  errUserWithIdNotExist,
+  errWrongUserData,
+  errPasswordMinLengthError,
+  errNameOrEmailEmpty,
 } = require('../errors/errors');
 
 // получаем данные пользователя
 module.exports.getUser = (req, res, next) => {
   if (!req.user._id) {
-    throw new ValidationErr('Ошибка. Не передан id пользователя!');
+    throw new ValidationErr(errUserIdEmpty);
   }
 
   User.findById(req.user._id)
@@ -26,11 +37,11 @@ module.exports.getUser = (req, res, next) => {
     .then((user) => res.status(COMMON_SUCCESS_CODE).send(user))
     .catch((err) => {
       if (err.name === RESOURCE_NOT_FOUND) {
-        return next(new NotFoundErr('Ошибка. Пользователь с указанным id не найден!'));
+        return next(new NotFoundErr(errUserWithIdNotExist));
       }
 
       if (err.kind === OBJECT_ID_ERROR) {
-        return next(new ValidationErr('Ошибка. Передан неверный формат id пользователя!'));
+        return next(new ValidationErr(errWrongUserId));
       }
 
       return next(err);
@@ -46,17 +57,17 @@ module.exports.createUser = (req, res, next) => {
   } = req.body;
 
   if (!email || !password) {
-    throw new ValidationErr('Ошибка. Поле email или password не может быть пустым!');
+    throw new ValidationErr(errEmailOrPasswordEmpty);
   }
 
   if (password.length < 8) {
-    throw new ValidationErr('Ошибка. Поле password не может быть меньше 8 символов!');
+    throw new ValidationErr(errPasswordMinLengthError);
   }
 
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        throw new ResourceExistErr('Ошибка.Пользователь с таким id уже существует!');
+        throw new ResourceExistErr(errUserEmailAlreadyExist);
       }
 
       return bcrypt.hash(password, 10);
@@ -75,12 +86,12 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
         return next(new ValidationErr(
-          `Ошибка. Переданы некорректные данные для создания пользователя: ${ERROR_MESSAGE(err)}`,
+          `${errWrongUserData}: ${ERROR_MESSAGE(err)}`,
         ));
       }
 
-      if (err.name === 'MongoError' && err.code === 11000) {
-        return next(new ResourceExistErr('Ошибка. Пользователь с таким email уже существует!'));
+      if (err.name === MONGO_DB_ERROR && err.code === 11000) {
+        return next(new ResourceExistErr(errUserEmailAlreadyExist));
       }
 
       return next(err);
@@ -99,17 +110,17 @@ module.exports.updateUserData = (req, res, next) => {
   const { name, email } = req.body;
 
   if (!req.user._id) {
-    throw new ValidationErr('Ошибка. Не передан id пользователя!');
+    throw new ValidationErr(errUserIdEmpty);
   }
 
   if (!name || !email) {
-    throw new ValidationErr('Ошибка. Не преданы данные для обновления пользователя');
+    throw new ValidationErr(errNameOrEmailEmpty);
   }
 
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        throw new ResourceExistErr('Ошибка.Пользователь с таким "email" уже существует!');
+        throw new ResourceExistErr(errUserEmailAlreadyExist);
       }
     })
     .then(() => User.findByIdAndUpdate(req.user._id, { name, email },
@@ -121,20 +132,20 @@ module.exports.updateUserData = (req, res, next) => {
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
         return next(new ValidationErr(
-          `Ошибка. Переданы некорректные данные для создания пользователя: ${ERROR_MESSAGE(err)}`,
+          `${errWrongUserData}: ${ERROR_MESSAGE(err)}`,
         ));
       }
 
       if (err.name === RESOURCE_NOT_FOUND) {
-        return next(new NotFoundErr('Ошибка. Пользователь с указанным id не найден.'));
+        return next(new NotFoundErr(errUserWithIdNotExist));
       }
 
       if (err.kind === OBJECT_ID_ERROR) {
-        return next(new ValidationErr('Ошибка. Передан неверный формат id пользователя.'));
+        return next(new ValidationErr(errWrongUserId));
       }
 
       if (err.code === 11000) {
-        return next(new ResourceExistErr('Ошибка. Пользователь с таким email уже существует!'));
+        return next(new ResourceExistErr(errUserEmailAlreadyExist));
       }
 
       return next(err);
@@ -146,7 +157,7 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    next(new ValidationErr('Ошибка. Поле "email" и "password" не может быть пустым'));
+    next(new ValidationErr(errEmailOrPasswordEmpty));
   }
 
   User.findUserByCredentials(email, password)
@@ -164,7 +175,7 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
       })
         .status(COMMON_SUCCESS_CODE)
-        .send({ message: 'Авторизация прошла успешно!' });
+        .send({ message: respAuthorizationSuccess });
     })
     .catch((err) => next(err));
 };
@@ -178,5 +189,5 @@ module.exports.logout = (req, res) => {
     secure: true,
   })
     .status(COMMON_SUCCESS_CODE)
-    .send({ message: 'Вы вышли из приложения!' });
+    .send({ message: respLogOutSuccess });
 };
