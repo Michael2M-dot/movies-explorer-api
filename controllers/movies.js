@@ -10,6 +10,11 @@ const {
   ERROR_MESSAGE,
   RESOURCE_NOT_FOUND,
   respMovieDeleted,
+  errWrongMovieData,
+  errMovieIdEmpty,
+  errWrongMovieId,
+  errMovieWithIdNotExist,
+  errUserAccessDenied,
 } = require('../errors/errors');
 
 // добавляем фильм в базу
@@ -47,7 +52,7 @@ module.exports.createMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
         return next(new ValidationErr(
-          `Ошибка при валидации данные для создании фильма: ${ERROR_MESSAGE(err)}`,
+          `${errWrongMovieData}: ${ERROR_MESSAGE(err)}`,
         ));
       }
 
@@ -65,14 +70,14 @@ module.exports.getMovies = (req, res, next) => {
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
   if (!req.params._id) {
-    throw new ValidationErr('Ошибка. Не передан id фильма!');
+    throw new ValidationErr(errMovieIdEmpty);
   }
 
   Movie.findById(req.params._id)
     .orFail()
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
-        throw new AccessDeniedErr('Отказано в доступе. Вы можете удалять только свои фильмы!');
+        throw new AccessDeniedErr(errUserAccessDenied);
       }
     })
     .then((movie) => Movie.deleteOne(movie, { new: true }))
@@ -81,11 +86,11 @@ module.exports.deleteMovie = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        return next(new ValidationErr('Ошибка. Передан неверный формат id фильма!'));
+        return next(new ValidationErr(errWrongMovieId ));
       }
 
       if (err.name === RESOURCE_NOT_FOUND) {
-        return next(new NotFoundErrors('Ошибка. Фильм с указанным id не найден!'));
+        return next(new NotFoundErrors(errMovieWithIdNotExist));
       }
 
       return next(err);

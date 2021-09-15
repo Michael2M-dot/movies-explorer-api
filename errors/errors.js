@@ -29,4 +29,11 @@ module.exports.errPasswordMinLengthError = 'Ошибка. Поле password не
 module.exports.errWrongToken = 'Ошибка. Не верный токен. Необходимо авторизоваться!';
 module.exports.errTokenEmpty = 'Ошибка. Токен не пришел. Необходимо авторизоваться!';
 
+// тексты для ошибок movie
+module.exports.errWrongMovieData = 'Ошибка. Переданы некорректные данные для добавления фильма в медиатеку';
+module.exports.errMovieIdEmpty = 'Ошибка. Не передан id фильма!';
+module.exports.errWrongMovieId = 'Ошибка. Передан неверный формат id фильма!';
+module.exports.errMovieWithIdNotExist = 'Ошибка. Фильм с указанным id не найден!';
+module.exports.errUserAccessDenied = 'Отказано в доступе. Вы можете удалять только свои фильмы!';
+
 module.exports.ERROR_MESSAGE = (err) => Object.values(err.errors).map((error) => error.message).join(', ');
