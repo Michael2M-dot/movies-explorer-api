@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(router);
+app.use('/', router);
 app.use(errorLogger);
 // ошибки валидации модуля celebrate
 app.use(errors());
