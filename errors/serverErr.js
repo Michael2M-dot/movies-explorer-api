@@ -1,7 +1,9 @@
+const { DEFAULT_SERVER_ERROR_CODE } = require('./errors');
+
 class ServerErr extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 500;
+    this.statusCode = DEFAULT_SERVER_ERROR_CODE;
   }
 }
 
