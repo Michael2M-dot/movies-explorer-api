@@ -8,10 +8,10 @@ const NotFoundErr = require('../errors/notFoundError');
 const { validateUserAuthToken } = require('../middlewares/validations');
 
 router.use(corsRequestValidate);
-router.use(authRouter);
+router.use('/api', authRouter);
 router.use(validateUserAuthToken, auth);
-router.use('/', userRouter);
-router.use('/', movieRouter);
+router.use('/api', userRouter);
+router.use('/api', movieRouter);
 router.use((req, res, next) => {
   next(new NotFoundErr('Запрашиваемый ресурс не найден'));
 });
