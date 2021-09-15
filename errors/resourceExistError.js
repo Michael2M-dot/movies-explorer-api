@@ -1,7 +1,9 @@
+const { RESOURCE_EXIST_ERROR_CODE } = require('./errors');
+
 class ResourceExistErr extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 409;
+    this.statusCode = RESOURCE_EXIST_ERROR_CODE;
   }
 }
 

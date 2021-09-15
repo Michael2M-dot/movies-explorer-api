@@ -86,7 +86,7 @@ module.exports.deleteMovie = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === VALIDATION_ERROR) {
-        return next(new ValidationErr(errWrongMovieId ));
+        return next(new ValidationErr(errWrongMovieId));
       }
 
       if (err.name === RESOURCE_NOT_FOUND) {
