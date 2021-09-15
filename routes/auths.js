@@ -13,7 +13,6 @@ const {
 } = require('../middlewares/validations');
 
 // регистрация пользователя
-// router.post('/signup', createNewAccountLimiter, celebrate(signUpSchema), createUser);
 router.post('/signup', createNewAccountLimiter, validateSignUp, createUser);
 
 // авторизация пользователя
