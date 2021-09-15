@@ -9,7 +9,7 @@ const { validateUserAuthToken } = require('../middlewares/validations');
 
 router.use(corsRequestValidate);
 router.use('/', authRouter);
-router.use(validateUserAuthToken, auth);
+router.use(auth);
 router.use('/', userRouter);
 router.use('/', movieRouter);
 router.use((req, res, next) => {
