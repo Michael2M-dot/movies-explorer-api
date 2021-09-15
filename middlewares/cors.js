@@ -1,6 +1,7 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const whiteList = [
   'http://localhost:3000',
+  'https://my-movie.nomoredomains.monster/api'
 ];
 
 // Значение для заголовка Access-Control-Allow-Methods по умолчанию (разрешены все типы запросов)
