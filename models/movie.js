@@ -42,16 +42,16 @@ const movieSchema = new mongoose.Schema({
       message: 'Поле "trailer" должно быть валидным url-адресом.',
     },
   },
-  thumbnail: {
-    type: String,
-    required: [true, 'Поле "thumbnail" должно быть заполнено'],
-    validate: {
-      validator(thumbnail) {
-        return validator.isURL(thumbnail);
-      },
-      message: 'Поле "thumbnail" должно быть валидным url-адресом.',
-    },
-  },
+  // thumbnail: {
+  //   type: String,
+  //   required: [true, 'Поле "thumbnail" должно быть заполнено'],
+  //   validate: {
+  //     validator(thumbnail) {
+  //       return validator.isURL(thumbnail);
+  //     },
+  //     message: 'Поле "thumbnail" должно быть валидным url-адресом.',
+  //   },
+  // },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
