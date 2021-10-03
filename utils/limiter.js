@@ -11,7 +11,7 @@ const apiRequestLimiter = rateLimiter({
 // лимит на создание новых аккаунтов с одного IP - 15 в час
 const createNewAccountLimiter = rateLimiter({
   windowMs: 60 * 60 * 1000,
-  max: 15,
+  max: 100,
   message: `С Вашего IP-адреса поступило слишком много запросов,
     на регистрацию нового пользователя! Попробуйте еще раз через 1 час. `,
 });
