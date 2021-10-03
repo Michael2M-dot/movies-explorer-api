@@ -2,6 +2,8 @@
 const whiteList = [
   'http://localhost:3000',
   'https://my-movie.nomoredomains.monster/api',
+  'http://localhost:3001',
+  'http://localhost:3000',
 ];
 
 // Значение для заголовка Access-Control-Allow-Methods по умолчанию (разрешены все типы запросов)
