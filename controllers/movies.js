@@ -34,17 +34,17 @@ module.exports.createMovie = (req, res, next) => {
   } = req.body;
 
   Movie.create({
-    country,
-    director,
+    // country,
+    // director,
     duration,
-    year,
-    description,
+    // year,
+    // description,
     image,
     trailer,
     nameRU,
-    nameEN,
-    thumbnail,
-    movieId,
+    // nameEN,
+    // thumbnail,
+    // movieId,
     owner: req.user._id,
   })
     .then((movie) => res.status(CREATE_RESOURCE_SUCCESS_CODE)
