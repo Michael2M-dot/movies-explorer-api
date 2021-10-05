@@ -86,23 +86,23 @@ module.exports.validateUserUpdateData = celebrate({
 // валидация данных при добавление фильма
 module.exports.validateCreateMovieData = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required(),
-    director: Joi.string().required(),
+    // country: Joi.string().required(),
+    // director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.string().required(),
-    description: Joi.string().required(),
+    // year: Joi.string().required(),
+    // description: Joi.string().required(),
     image: Joi.string().required()
       .uri()
       .message('Ошибка. Поле "image" должно быть валидным url-адресом!'),
     trailer: Joi.string().required()
       .uri()
       .message('Ошибка. Поле "trailer" должно быть валидным url-адресом!'),
-    thumbnail: Joi.string().required()
-      .uri()
-      .message('Ошибка. Поле "thumbnail" должно быть валидным url-адресом!'),
+    // thumbnail: Joi.string().required()
+    //   .uri()
+    //   .message('Ошибка. Поле "thumbnail" должно быть валидным url-адресом!'),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
-    nameEN: Joi.string().required(),
+    // nameEN: Joi.string().required(),
   }),
 });
 

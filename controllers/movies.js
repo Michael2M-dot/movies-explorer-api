@@ -44,7 +44,7 @@ module.exports.createMovie = (req, res, next) => {
     nameRU,
     // nameEN,
     // thumbnail,
-    // movieId,
+    movieId,
     owner: req.user._id,
   })
     .then((movie) => res.status(CREATE_RESOURCE_SUCCESS_CODE)

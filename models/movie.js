@@ -35,6 +35,10 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
     required: [true, 'В поле "owner" должен быть передан id владельца карточки'],
   },
+  movieId: {
+    type: Number,
+    required: [true, 'В поле "movieId" должен быть передан id фильма от сервиса MoviesExplorer'],
+  },
   // country: {
   //   type: String,
   //   required: [true, 'Поле "country" должно быть заполнено'],
@@ -60,10 +64,6 @@ const movieSchema = new mongoose.Schema({
   //     },
   //     message: 'Поле "thumbnail" должно быть валидным url-адресом.',
   //   },
-  // },
-  // movieId: {
-  //   type: Number,
-  //   required: [true, 'В поле "movieId" должен быть передан id фильма от сервиса MoviesExplorer'],
   // },
   // nameEN: {
   //   type: String,
