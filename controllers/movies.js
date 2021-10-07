@@ -8,6 +8,7 @@ const {
   CREATE_RESOURCE_SUCCESS_CODE,
   VALIDATION_ERROR,
   ERROR_MESSAGE,
+  OBJECT_ID_ERROR,
   RESOURCE_NOT_FOUND,
   respMovieDeleted,
   errWrongMovieData,
@@ -69,9 +70,9 @@ module.exports.getMovies = (req, res, next) => {
 
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
-  if (!req.params._id) {
-    throw new ValidationErr(errMovieIdEmpty);
-  }
+  // if (!req.params._id) {
+  //   throw new ValidationErr(errMovieIdEmpty);
+  // }
 
   Movie.findById(req.params._id)
     .orFail()
@@ -91,6 +92,10 @@ module.exports.deleteMovie = (req, res, next) => {
 
       if (err.name === RESOURCE_NOT_FOUND) {
         return next(new NotFoundErrors(errMovieWithIdNotExist));
+      }
+
+      if (err.kind === OBJECT_ID_ERROR) {
+        return next(new ValidationErr(errMovieIdEmpty));
       }
 
       return next(err);
