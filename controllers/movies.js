@@ -74,15 +74,14 @@ module.exports.deleteMovie = (req, res, next) => {
   //   throw new ValidationErr(errMovieIdEmpty);
   // }
 
-  Movie.findById(req.params._id)
+  Movie.findByIdAndDelete(req.params._id)
     .orFail()
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
         throw new AccessDeniedErr(errUserAccessDenied);
       }
-      Movie.deleteOne(movie, { new: true });
     })
-    // .then((movie) => Movie.deleteOne(movie, { new: true }))
+    .then((movie) => Movie.deleteOne(movie, { new: true }))
     .then((result) => res.status(COMMON_SUCCESS_CODE).send({
       result, message: respMovieDeleted,
     }))
