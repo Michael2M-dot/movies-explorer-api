@@ -74,7 +74,7 @@ module.exports.deleteMovie = (req, res, next) => {
   //   throw new ValidationErr(errMovieIdEmpty);
   // }
 
-  Movie.findByIdAndRemove({ id: req.params._id })
+  Movie.findByIdAndRemove(req.params._id)
     .orFail()
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
