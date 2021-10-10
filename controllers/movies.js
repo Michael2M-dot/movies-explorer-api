@@ -70,14 +70,12 @@ module.exports.getMovies = (req, res, next) => {
 
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
-  // if (!req.params._id) {
-  //   throw new ValidationErr(errMovieIdEmpty);
-  // }
-  console.log('id', req.params._id);
+  if (!req.params._id) {
+    throw new ValidationErr(errMovieIdEmpty);
+  }
   Movie.findById(req.params._id)
     .orFail()
     .then((movie) => {
-      console.log(movie);
       if (movie.owner.toString() !== req.user._id) {
         throw new AccessDeniedErr(errUserAccessDenied);
       }
