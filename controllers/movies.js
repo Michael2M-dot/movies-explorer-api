@@ -68,6 +68,13 @@ module.exports.getMovies = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+// получаем все фильмы
+module.exports.getSavedMovies = (req, res, next) => {
+  Movie.findById(req.user._id)
+    .then((movies) => res.status(COMMON_SUCCESS_CODE).send(movies))
+    .catch((err) => next(err));
+};
+
 // удаляем фильм из базы
 module.exports.deleteMovie = (req, res, next) => {
   if (!req.params._id) {

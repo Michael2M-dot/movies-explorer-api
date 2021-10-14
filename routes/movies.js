@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
   createMovie,
   getMovies,
-  deleteMovie,
+  deleteMovie, getSavedMovies,
 } = require('../controllers/movies');
 const {
   validateCreateMovieData,
@@ -16,6 +16,8 @@ router.post('/movies', validateCreateMovieData, createMovie);
 router.delete('/movies/:_id', validateMovieAccessId, deleteMovie);
 
 // получаем все фильмы
-router.get('/movies', getMovies);
+// router.get('/movies', getMovies);
+
+router.get('/movies', getSavedMovies);
 
 module.exports = router;
