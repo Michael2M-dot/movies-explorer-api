@@ -70,7 +70,10 @@ module.exports.getMovies = (req, res, next) => {
 
 // получаем все фильмы
 module.exports.getSavedMovies = (req, res, next) => {
-  Movie.findById(req.user._id)
+  Movie.find({})
+    .then((movies) => {
+      return movies.filter((e) => e.owner.toString() === req.user._id )
+    })
     .then((movies) => res.status(COMMON_SUCCESS_CODE).send(movies))
     .catch((err) => next(err));
 };
