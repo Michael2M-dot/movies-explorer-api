@@ -119,7 +119,7 @@ module.exports.updateUserData = (req, res, next) => {
 
   User.findOne({ email })
     .then((user) => {
-      if (user) {
+      if (user._id !== req.user._id) {
         throw new ResourceExistErr(errUserEmailAlreadyExist);
       }
     })
