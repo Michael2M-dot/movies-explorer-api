@@ -146,41 +146,6 @@ module.exports.updateUserData = (req, res, next) => {
 
       return next(err);
     });
-
-  // User.findOne({ email })
-  //   .then((user) => {
-  //     console.log(user);
-  //     if (user._id !== req.user._id) {
-  //       throw new ResourceExistErr(errUserEmailAlreadyExist);
-  //     }
-  //   })
-  //   .then(() => User.findByIdAndUpdate(req.user._id, { name, email },
-  //     { new: true, runValidation: true }))
-  //   .then((user) => {
-  //     res.status(COMMON_SUCCESS_CODE)
-  //       .send(user);
-  //   })
-  //   .catch((err) => {
-  //     if (err.name === VALIDATION_ERROR) {
-  //       return next(new ValidationErr(
-  //         `${errWrongUserData}: ${ERROR_MESSAGE(err)}`,
-  //       ));
-  //     }
-  //
-  //     if (err.name === RESOURCE_NOT_FOUND) {
-  //       return next(new NotFoundErr(errUserWithIdNotExist));
-  //     }
-  //
-  //     if (err.kind === OBJECT_ID_ERROR) {
-  //       return next(new ValidationErr(errWrongUserId));
-  //     }
-  //
-  //     if (err.code === 11000) {
-  //       return next(new ResourceExistErr(errUserEmailAlreadyExist));
-  //     }
-  //
-  //     return next(err);
-  //   });
 };
 
 // авторизация пользователя
