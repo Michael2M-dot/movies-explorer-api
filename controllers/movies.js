@@ -21,30 +21,24 @@ const {
 // добавляем фильм в базу
 module.exports.createMovie = (req, res, next) => {
   const {
-    country,
-    director,
-    duration,
-    year,
-    description,
+    nameRU,
     image,
     trailer,
-    nameRU,
-    nameEN,
-    thumbnail,
+    duration,
     movieId,
+    // country,
+    // director,
+    // year,
+    // description,
+    // nameEN,
+    // thumbnail,
   } = req.body;
 
   Movie.create({
-    // country,
-    // director,
-    duration,
-    // year,
-    // description,
+    nameRU,
     image,
     trailer,
-    nameRU,
-    // nameEN,
-    // thumbnail,
+    duration,
     movieId,
     owner: req.user._id,
   })
